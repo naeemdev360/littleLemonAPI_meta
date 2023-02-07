@@ -9,10 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class MenuItemSerializer(serializers.ModelSerializer):
     # category = CategorySerializer()
-    category = serializers.HyperlinkedRelatedField(
-        queryset=Category.objects.all(),
-        view_name='category-detail'
-    )
+    # category = serializers.RelatedField()
     class Meta:
         model = MenuItem
         fields = ['id','title','price','inventory','category']
