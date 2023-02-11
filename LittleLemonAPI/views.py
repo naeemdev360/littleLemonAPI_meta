@@ -1,12 +1,18 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics,viewsets
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.decorators import api_view
 from .models import MenuItem,FastFood,Category
 from django.core.paginator import Paginator,EmptyPage
 from .serializers import MenuItemSerializer,FastFoodSerializer,CategorySerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 
+
+class MenuItemsViewSet(viewsets.ModelViewSet):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
 # views using function
 @api_view(['GET',"POST"])
 def menu_items(request):
@@ -64,4 +70,9 @@ class FastFoodView(generics.ListCreateAPIView):
 class SingleFastFood(generics.RetrieveUpdateAPIView,generics.DestroyAPIView):
     queryset = FastFood.objects.all()
     serializer_class = FastFoodSerializer
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def secret(request):
+    return Response({"message":"some secret message"})
 
