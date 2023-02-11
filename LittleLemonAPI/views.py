@@ -7,8 +7,9 @@ from .models import MenuItem,FastFood,Category
 from django.core.paginator import Paginator,EmptyPage
 from .serializers import MenuItemSerializer,FastFoodSerializer,CategorySerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes
-
+from rest_framework.decorators import permission_classes,throttle_classes
+from rest_framework.throttling import AnonRateThrottle,UserRateThrottle
+from .throttles import TenCallesPerMinute
 
 class MenuItemsViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
@@ -83,5 +84,14 @@ def manager_view(request):
         return Response({"message":"Only manager can view this"})
     else:
         return Response({"message":"you are not authorize"},403)
+@api_view()
+@throttle_classes([AnonRateThrottle])
+def throttle_check(request):
+    return Response({'message':"successfull"})
+
+@api_view()
+@throttle_classes([TenCallesPerMinute])
+def throttle_check_auth(request):
+    return Response({'message':"successfull"})
         
 
