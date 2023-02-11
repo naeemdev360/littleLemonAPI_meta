@@ -12,5 +12,6 @@ urlpatterns = [
     path('category/<int:pk>',views.SingleCategoryView.as_view(),name='category-detail'),
     path('secret/',views.secret,name='secret'),
     path('api-token-auth/',obtain_auth_token),
+    path('manager-view/',views.manager_view),
 ]
 

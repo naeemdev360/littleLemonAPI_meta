@@ -76,3 +76,12 @@ class SingleFastFood(generics.RetrieveUpdateAPIView,generics.DestroyAPIView):
 def secret(request):
     return Response({"message":"some secret message"})
 
+@api_view()
+@permission_classes([IsAuthenticated])
+def manager_view(request):
+    if request.user.groups.filter(name='Manager').exists():
+        return Response({"message":"Only manager can view this"})
+    else:
+        return Response({"message":"you are not authorize"},403)
+        
+
